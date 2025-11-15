@@ -183,7 +183,6 @@ Incluye:
 
 # 🧠 5. Diagrama de Arquitectura (Mermaid)
 
-```mermaid
 flowchart LR
 
 subgraph Sources["🔹 Data Sources"]
@@ -220,6 +219,6 @@ end
 subgraph Products["🟧 Capa 3 - Data Products"]
 S1 --> BI[Self-Service BI Layer]
 S3 --> FR[Fraud Streaming Engine]
-S4 --> FS[Feature Store (Risk)]
+S4 --> FS[Feature Store - Risk]
 end
-```
+

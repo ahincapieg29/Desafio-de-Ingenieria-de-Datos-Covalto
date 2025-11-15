@@ -107,19 +107,19 @@ Incluye:
 
 ## 🥉 **Capa 2 — Modelo Semántico Empresarial**
 
-Creación de modelos con significados únicos:
-
-- Cliente  
-- Cuenta  
-- Transacción  
-- Comportamiento de crédito  
-- Métricas financieras derivadas  
+| Entidad      | Descripción                                                   |
+| ------------ | ------------------------------------------------------------- |
+| Cliente      | Información única del cliente: perfil, segmentación y comportamiento |
+| Cuenta       | Detalles de cuentas financieras y relaciones con el cliente   |
+| Transacción  | Registros de movimientos y pagos                               |
+| Comportamiento de crédito | Métricas derivadas de riesgo y cumplimiento de pagos |
+| Métricas financieras derivadas | Indicadores de negocio y agregaciones financieras |
 
 **Beneficios:**  
 - Elimina confusiones semánticas  
-- Facilita el análisis por parte de negocio  
-- Aporta entendimiento estándar a riesgo y fraude  
-- Mantiene los datos actualizados mediante captura de cambios (CDC)
+- Facilita el análisis de negocio  
+- Garantiza consistencia en riesgo y fraude  
+- Mantiene datos actualizados mediante CDC  
 
 ---
 
@@ -163,26 +163,26 @@ Creación de modelos con significados únicos:
 - Contratos de datos entre equipos  
 - Monitoreo de procesos con métricas y alertas  
 - Validaciones automáticas de calidad  
-- Linaje completo desde origen hasta consumo  
+- Linaje completo desde origen hasta consumo
+-  **Alfabetización y cultura de datos:** equipos entrenados en buenas prácticas y significado de datos  
 
-🎯 **Beneficio:** datos confiables y rastreables para BI, riesgo y fraude.
+🎯 **Beneficio:** datos confiables, rastreables y usados de forma correcta por toda la organización. 
 
 ---
 
 # 🧠 5. Diagrama de Arquitectura
 
+```mermaid
 flowchart LR
 
-%% Fuentes de datos
 subgraph Sources["🔹 Fuentes de Datos"]
 A[Declaraciones Anuales XML]
 B[Transacciones de Tarjetas JSON]
 C[Bases de Datos Internas]
-D[Extractos Bancarios XML]
+D[Estados de Cuenta XML]
 E[PDFs e Imágenes en S3]
 end
 
-%% Ingesta
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
 A --> I1[Regulación + Colas de Trabajo]
 B --> I2[Ingesta en Streaming + Captura de Cambios]
@@ -191,7 +191,6 @@ D --> I4[Parseo XML]
 E --> I5[OCR y Extracción NLP]
 end
 
-%% Procesamiento
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
 I1 --> C1[Normalización + Validación de Calidad]
 I2 --> C1
@@ -200,24 +199,19 @@ I4 --> C1
 I5 --> C1
 end
 
-%% Modelo Semántico
 subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
-C1 --> S1[Cliente]
-C1 --> S2[Cuenta] 
-C1 --> S3[Transacción]
-C1 --> S4[Métricas Financieras]
+C1 --> S1[Cliente: perfil, segmentación, comportamiento]
+C1 --> S2[Cuenta: información de cuentas]
+C1 --> S3[Transacción: movimientos y pagos]
+C1 --> S4[Comportamiento de crédito: métricas de riesgo]
+C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
 end
 
-%% Productos de Datos
 subgraph Products["🟧 Capa 3 - Productos de Datos"]
 S1 --> BI[Visualización y BI]
 S3 --> FR[Motor de Fraude en Tiempo Real]
 S4 --> FS[Feature Store para Riesgo]
-
-%% opcional: Cuenta como apoyo
-S2 -.-> FS
 end
-
 
 
 

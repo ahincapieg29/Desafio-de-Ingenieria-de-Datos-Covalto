@@ -199,12 +199,14 @@ I4 --> C1
 I5 --> C1
 end
 
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
-C1 --> S1[Cliente: Perfil, segmentación, comportamiento]
-C1 --> S2[Cuenta: Información de cuentas]
-C1 --> S3[Transacción: Movimientos y pagos]
-C1 --> S4[Comportamiento de crédito: Métricas de riesgo]
-C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
+subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
+    style Semantic fill:#ffffcc
+    Spacer1[" "] 
+    C1 --> S1["Cliente<br>Perfil, segmentación,<br>comportamiento"]
+    C1 --> S2["Cuenta<br>Información de cuentas"]
+    C1 --> S3["Transacción<br>Movimientos y pagos"]
+    C1 --> S4["Comportamiento de crédito<br>Métricas de riesgo"]
+    C1 --> S5["Métricas financieras derivadas<br>KPIs y agregaciones"]
 end
 
 subgraph Products["🟧 Capa 3 - Productos de Datos"]

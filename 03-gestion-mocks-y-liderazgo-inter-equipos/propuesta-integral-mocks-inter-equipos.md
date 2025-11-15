@@ -3,6 +3,8 @@
 **Por:** Alejandra Hincapié Garzón  
 **Cargo:** Gerente de Ingeniería de Datos e IA — Liderazgo sistémico, humano y técnico  
 
+“Propongo un enfoque integral que estabiliza los mocks, mejora la colaboración inter-equipos y empodera al equipo mediante contratos versionados, pipelines automáticos y liderazgo sistémico.”
+
 ---
 
 ## 🌟 Contexto Organizacional y Relevancia para COVALTO

@@ -8,56 +8,56 @@
 
 Diseñar una **arquitectura moderna, escalable y segura** que permita a COVALTO habilitar:
 
-- Autonomía analítica para equipos de negocio  
-- Feature engineering robusto para modelos de riesgo  
-- Ingesta y monitoreo en tiempo real para fraude  
+- Autonomía para que los equipos de negocio puedan analizar sus datos  
+- Creación de características robustas para modelos de riesgo  
+- Ingesta y monitoreo en tiempo real de eventos de fraude  
 - Gobernanza, calidad y trazabilidad exigidas en un banco regulado  
 
-La solución aborda simultáneamente **necesidades de negocio**, **restricciones operativas**, y **madurez técnica**, integrando visión 360° del ecosistema de datos.
+Esta solución integra simultáneamente **necesidades de negocio**, **restricciones operativas**, y **madurez técnica**, ofreciendo una visión completa del ecosistema de datos.
 
 ---
 
 # 🧩 1. Resumen de los Casos de Uso
 
-### **1️⃣ Customer Behavior Data Visualization**
-**Necesidad:** analistas quieren crear sus propios reportes sin depender de desarrolladores.  
-**Dolores actuales:**  
-- Pedidos ad-hoc  
-- Confusión semántica  
-- Fuentes heterogéneas  
-- Falta de un modelo común  
+### **1️⃣ Visualización del Comportamiento del Cliente**
+**Necesidad:** analistas quieren crear reportes propios sin depender de desarrolladores.  
+**Problemas actuales:**  
+- Solicitudes ad-hoc que generan retrasos  
+- Diferencias de significado entre distintas fuentes  
+- Datos dispersos en múltiples sistemas  
+- Ausencia de un modelo de datos común  
 
 ---
 
-### **2️⃣ Risk Assessment para Hipotecas**
-**Necesidad:** modelos basados en features derivados, no datos crudos.  
+### **2️⃣ Evaluación de Riesgo para Hipotecas**
+**Necesidad:** modelos basados en características derivadas, no en datos crudos.  
 **Requiere:**  
-- Pipelines confiables  
-- Feature store gobernado  
-- Trazabilidad  
-- Procesamiento batch y near-real-time  
+- Procesos confiables y repetibles  
+- Almacenamiento de características gobernado y versionado  
+- Trazabilidad completa  
+- Procesamiento en lotes y casi en tiempo real  
 
 ---
 
-### **3️⃣ Fraud Monitoring (Tiempo Real)**
-**Necesidad:** ingesta streaming + acceso a features usados en riesgo.  
+### **3️⃣ Monitoreo de Fraude en Tiempo Real**
+**Necesidad:** ingestión de datos en streaming y acceso a características usadas en riesgo.  
 **Requiere:**  
-- Bajas latencias  
-- Confiabilidad  
-- Procesamiento event-driven  
-- Acceso a features transversales
+- Baja latencia  
+- Confiabilidad en el procesamiento  
+- Procesamiento basado en eventos  
+- Acceso rápido a características de distintas fuentes
 
 ---
 
 # 🏛️ 2. Principios de Diseño
 
-- **Data as a Product** — cada conjunto de datos tiene dueño, SLA, documentación y contratos.  
-- **Semántica compartida** — diccionario + modelo común para mitigar ambigüedad.  
-- **Arquitectura en capas** — separación clara de responsabilidades.  
-- **Real-time + batch coexistentes** — cada caso usa su mejor patrón.  
-- **Trazabilidad y gobernanza aplicadas desde el diseño.**  
-- **Escalabilidad horizontal** — APIs externas con límites requieren paralelismo y control.  
-- **Calidad y monitoreo continuo** — validaciones automáticas y alertas.
+- **Datos como Producto:** cada conjunto de datos tiene responsable, documentación, acuerdos de servicio y contratos claros.  
+- **Semántica compartida:** diccionario de datos y modelo común para evitar confusión.  
+- **Arquitectura en capas:** cada capa tiene funciones bien definidas.  
+- **Procesamiento en tiempo real y por lotes:** cada caso usa la estrategia más adecuada.  
+- **Trazabilidad y gobernanza desde el diseño:** todos los datos son auditable y rastreables.  
+- **Escalabilidad horizontal:** manejo eficiente de límites de APIs y paralelismo.  
+- **Calidad de datos:** validaciones automáticas, alertas y métricas de desempeño.
 
 ---
 
@@ -65,113 +65,102 @@ La solución aborda simultáneamente **necesidades de negocio**, **restricciones
 
 ---
 
-## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming + CDC)**
+## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming + Captura de Cambios)**
 
-### **Data Sources y estrategias:**
+### **Fuentes de Datos y Estrategias**
 
-#### **A. Annual Tax Returns (XML API — rate-limited, sin bulk)**
-- Ingesta controlada con **throttling** y **scheduler distribuido**.  
-- Uso de **work queues** para paralelizar sin romper límites.  
-- Caching administrativo para evitar llamadas repetidas.  
+#### **A. Declaraciones Anuales de Impuestos (API XML limitada)**
+- Control de ingestión con **regulación de velocidad** y programación distribuida  
+- Uso de **colas de trabajo** para paralelizar sin exceder límites  
+- Caché para evitar llamadas repetidas
 
-#### **B. Credit Card Transactions**
-- **API JSON (streaming + bulk):** conexión a **streaming ingestion** (Pub/Sub / Kafka).  
-- **Pg interna (data quality baja):**  
-  - **CDC (Change Data Capture)** para capturar solo cambios  
-  - Perfilamiento y análisis de integridad  
-  - Imputación y normalización  
-  - Auditoría y reconciliación  
+#### **B. Transacciones de Tarjetas de Crédito**
+- Ingesta desde API JSON y bases internas  
+- **Captura de cambios (CDC):** solo se traen las filas nuevas o modificadas  
+- Validaciones de calidad: integridad, consistencia y completitud  
+- Auditoría de reconciliación con sistemas contables  
 
-#### **C. Bank Statements (XML + PDFs/Imágenes en S3)**
+#### **C. Estados de Cuenta Bancarios (XML y PDFs/Imágenes)**
 - XML → parseo estructurado con validación de esquema  
-- PDF/imagen → OCR + NLP para extraer entidades  
-- ML para estandarizar campos dudosos / manuscritos  
-- **Reglas de calidad:** completitud, consistencia, validación de tipos  
+- PDF/Imagen → OCR y procesamiento de lenguaje para extraer datos relevantes  
+- Inteligencia artificial para estandarizar campos dudosos  
+- Reglas de calidad: completitud, consistencia y validez de tipos
 
 ---
 
 ### **Tecnologías sugeridas:**
-
-- **Streaming:** Kafka / PubSub  
-- **Batch orchestration:** Airflow / Databricks Jobs  
-- **Data Lake:** GCS / S3 en formato Parquet o Delta  
-- **OCR:** AWS Textract / GCP Document AI  
-- **ETL/ELT:** Spark, Databricks, Beam  
-- **CDC:** Debezium / Fivetran / Change Data Streams  
+- Mensajería en tiempo real: Kafka, Pub/Sub  
+- Orquestación de procesos por lotes: Airflow, Databricks Jobs  
+- Almacenamiento: Data Lake en GCS o S3, formatos Parquet o Delta  
+- OCR: AWS Textract o GCP Document AI  
+- Procesamiento de datos: Spark, Beam, Databricks  
+- Captura de cambios: Debezium, Fivetran o Change Data Streams  
 
 ---
 
-## 🥈 **Capa 1 — Procesamiento Estándar y Normalización**
+## 🥈 **Capa 1 — Normalización y Limpieza de Datos**
 
-Objetivo: **eliminar ambigüedad y crear semántica única** para toda la organización.
+Objetivo: **eliminar ambigüedad y unificar la semántica de todos los datos**.
 
 Incluye:
 
-- Tipificación  
-- Estandarización de fechas, valores monetarios, IDs  
+- Tipificación de datos  
+- Estandarización de fechas, valores monetarios y identificadores  
 - Detección de duplicados  
 - Validación contra reglas de negocio  
 - Auditoría y linaje automático  
-- **Calidad de datos:**  
-  - Completeness checks  
-  - Pattern & type validation  
-  - Consistency across sources  
-  - Alertas automáticas y métricas de calidad  
+- Validaciones de calidad: completitud, consistencia, patrones de datos y alertas
 
-📌 **Resultado:** Tablas **Clean** con consistencia garantizada y linaje rastreable.
+📌 **Resultado:** Tablas limpias y consistentes, listas para análisis.
 
 ---
 
-## 🥉 **Capa 2 — Modelo Semántico Empresarial ("Conformed Layer")**
+## 🥉 **Capa 2 — Modelo Semántico Empresarial**
 
-Modelos con significados únicos:
+Creación de modelos con significados únicos:
 
-- Customer  
-- Account  
-- Transaction  
-- Credit behavior  
-- Derived financial metrics  
+- Cliente  
+- Cuenta  
+- Transacción  
+- Comportamiento de crédito  
+- Métricas financieras derivadas  
 
-**Valor:**  
-- Elimina polysemy  
-- Facilita self-service  
-- Aporta entendimiento estándar a analistas, riesgo y fraude  
-- Integración CDC para mantener frescura y consistencia  
-
----
-
-## 🏅 **Capa 3 — Data Products según Caso de Uso**
-
-### **A. Self-Service BI / Customer Behavior**
-- Semantic Layer (dbt + LookML / Cube.js / PowerBI datasets)  
-- Exposición controlada por permisos  
-- Diccionario de datos vivo  
-- Campos normalizados y validados  
-- **Alertas de calidad para analistas**  
-
-🎯 Los analistas crean reportes **sin depender del equipo de ingeniería**.
+**Beneficios:**  
+- Elimina confusiones semánticas  
+- Facilita el análisis por parte de negocio  
+- Aporta entendimiento estándar a riesgo y fraude  
+- Mantiene los datos actualizados mediante captura de cambios (CDC)
 
 ---
 
-### **B. Risk Assessment Feature Store**
-**Requiere:**
+## 🏅 **Capa 3 — Productos de Datos según Caso de Uso**
 
-- Feature Store (Feast / Hopsworks / Vertex Feature Store)  
-- Versionado de features  
-- Tiempos de validez (point-in-time correctness)  
-- Pipelines batch y streaming sincronizados  
-- **Validaciones de integridad y calidad** para features críticos  
+### **A. Visualización y BI del Cliente**
+- Exposición de datos normalizados y validados  
+- Diccionario de datos actualizado  
+- Acceso controlado según permisos  
+- Alertas automáticas si los datos pierden consistencia
 
-🎯 Garantiza fairness, reproducibilidad y precisión en modelos hipotecarios.
+🎯 Analistas pueden crear reportes sin depender de ingeniería.
 
 ---
 
-### **C. Fraud Monitoring en Tiempo Real**
-- Transformaciones en streaming  
-- Enriquecimiento con Features de riesgo  
-- Scores en línea + almacenamiento en cola  
-- Detección basada en reglas + ML  
-- **Alertas automáticas ante inconsistencias o latencias**  
+### **B. Feature Store para Modelos de Riesgo**
+- Almacenamiento de características con versionamiento  
+- Tiempo de validez de cada característica  
+- Procesamiento batch y en streaming sincronizado  
+- Validaciones de calidad y consistencia de los datos
+
+🎯 Garantiza reproducibilidad, equidad y precisión en los modelos de riesgo.
+
+---
+
+### **C. Monitoreo de Fraude en Tiempo Real**
+- Transformaciones y enriquecimiento de datos en tiempo real  
+- Cálculo de puntuaciones de riesgo en línea  
+- Almacenamiento temporal para colas de eventos  
+- Detección de patrones mediante reglas y modelos predictivos  
+- Alertas automáticas ante inconsistencias o retrasos
 
 🎯 Velocidad y precisión para proteger la operación bancaria.
 
@@ -179,57 +168,57 @@ Modelos con significados únicos:
 
 # 🛡️ 4. Gobernanza, Calidad y Confianza
 
-Arquitectura segura, auditable y confiable:
+La arquitectura garantiza **seguridad, auditabilidad y confianza**:
 
 - Catálogo y diccionario de datos  
-- Gestión de acceso: RBAC + fines regulatorios  
-- Data Contracts entre squads  
-- Monitoreo de pipelines (SLAs / SLIs / SLOs)  
-- Validaciones automáticas (Great Expectations / Data Quality Rules)  
-- **Linaje completo** desde origen hasta consumo  
+- Gestión de acceso basada en roles y cumplimiento regulatorio  
+- Contratos de datos entre equipos  
+- Monitoreo de procesos con métricas y alertas  
+- Validaciones automáticas de calidad  
+- Linaje completo desde origen hasta consumo  
 
-🎯 **Beneficio:** datos confiables para BI, riesgo y fraude, con trazabilidad y alertas proactivas.
+🎯 **Beneficio:** datos confiables y rastreables para BI, riesgo y fraude.
 
 ---
 
-# 🧠 5. Diagrama de Arquitectura (Mermaid)
+# 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
 flowchart LR
 
-subgraph Sources["🔹 Data Sources"]
-A[Annual Tax Returns XML API]
-B[Credit Card JSON API]
-C[Internal PG Databases]
-D[Bank Statements XML]
+subgraph Sources["🔹 Fuentes de Datos"]
+A[Declaraciones Anuales XML]
+B[Transacciones de Tarjetas JSON]
+C[Bases de Datos Internas]
+D[Estados de Cuenta XML]
 E[PDFs e Imágenes en S3]
 end
 
-subgraph Ingestion["🟦 Capa 0 - Ingesta + CDC"]
-A --> I1[Throttle + Queue Workers]
-B --> I2[Streaming Ingestion + CDC]
-C --> I3[Batch Extract + DQ Checks + CDC]
-D --> I4[XML Parser]
-E --> I5[OCR + NLP Extraction]
+subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
+A --> I1[Regulación + Colas de Trabajo]
+B --> I2[Ingesta en Streaming + Captura de Cambios]
+C --> I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
+D --> I4[Parseo XML]
+E --> I5[OCR y Extracción NLP]
 end
 
-subgraph Processing["🟩 Capa 1 - Clean / Normalización"]
-I1 --> C1[Normalization + DQ Validation]
+subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
+I1 --> C1[Normalización + Validación de Calidad]
 I2 --> C1
 I3 --> C1
 I4 --> C1
 I5 --> C1
 end
 
-subgraph Semantic["🟨 Capa 2 - Conformed Model"]
-C1 --> S1[Customer]
-C1 --> S2[Account]
-C1 --> S3[Transaction]
-C1 --> S4[Financial Metrics]
+subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
+C1 --> S1[Cliente]
+C1 --> S2[Cuenta]
+C1 --> S3[Transacción]
+C1 --> S4[Métricas Financieras]
 end
 
-subgraph Products["🟧 Capa 3 - Data Products"]
-S1 --> BI[Self-Service BI Layer]
-S3 --> FR[Fraud Streaming Engine]
-S4 --> FS[Feature Store - Risk]
+subgraph Products["🟧 Capa 3 - Productos de Datos"]
+S1 --> BI[Visualización y BI]
+S3 --> FR[Motor de Fraude en Tiempo Real]
+S4 --> FS[Feature Store para Riesgo]
 end

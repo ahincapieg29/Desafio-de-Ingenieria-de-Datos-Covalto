@@ -174,6 +174,7 @@ Creación de modelos con significados únicos:
 ```mermaid
 flowchart LR
 
+%% Fuentes de datos
 subgraph Sources["🔹 Fuentes de Datos"]
 A[Declaraciones Anuales XML]
 B[Transacciones de Tarjetas JSON]
@@ -182,6 +183,7 @@ D[Extractos Bancarios XML]
 E[PDFs e Imágenes en S3]
 end
 
+%% Ingesta
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
 A --> I1[Regulación + Colas de Trabajo]
 B --> I2[Ingesta en Streaming + Captura de Cambios]
@@ -190,6 +192,7 @@ D --> I4[Parseo XML]
 E --> I5[OCR y Extracción NLP]
 end
 
+%% Procesamiento
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
 I1 --> C1[Normalización + Validación de Calidad]
 I2 --> C1
@@ -198,15 +201,27 @@ I4 --> C1
 I5 --> C1
 end
 
+%% Modelo Semántico
 subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
 C1 --> S1[Cliente]
-C1 --> S2[Cuenta]
+C1 --> S2[Cuenta] 
 C1 --> S3[Transacción]
 C1 --> S4[Métricas Financieras]
 end
 
+%% Productos de Datos
 subgraph Products["🟧 Capa 3 - Productos de Datos"]
 S1 --> BI[Visualización y BI]
 S3 --> FR[Motor de Fraude en Tiempo Real]
 S4 --> FS[Feature Store para Riesgo]
+
+%% opcional: Cuenta como apoyo
+S2 -.-> FS
 end
+
+%% Estilo para separar nodos y que no se superpongan
+style S1 fill:#ffefc0,stroke:#333,stroke-width:1px
+style S2 fill:#ffe0e0,stroke:#333,stroke-width:1px
+style S3 fill:#c0ffd8,stroke:#333,stroke-width:1px
+style S4 fill:#d0e0ff,stroke:#333,stroke-width:1px
+

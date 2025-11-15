@@ -173,54 +173,44 @@ Incluye:
 # 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
+
+```mermaid
 flowchart LR
-%% ==================== Fuentes ====================
+
 subgraph Sources["🔹 Fuentes de Datos"]
-    A[Declaraciones Anuales XML]
-    B[Transacciones de Tarjetas JSON]
-    C[Bases de Datos Internas]
-    D[Estados de Cuenta XML]
-    E[PDFs e Imágenes en S3]
+A[Declaraciones Anuales XML]
+B[Transacciones de Tarjetas JSON]
+C[Bases de Datos Internas]
+D[Estados de Cuenta XML]
+E[PDFs e Imágenes en S3]
 end
 
-%% ==================== Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-    A --> I1[Regulación + Colas de Trabajo]
-    B --> I2[Ingesta en Streaming + Captura de Cambios]
-    C --> I3[Extracción Batch + Reglas de Calidad + CDC]
-    D --> I4[Parseo XML]
-    E --> I5[OCR y Extracción NLP]
+A --> I1[Regulación + Colas de Trabajo]
+B --> I2[Ingesta en Streaming + Captura de Cambios]
+C --> I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
+D --> I4[Parseo XML]
+E --> I5[OCR y Extracción NLP]
 end
 
-%% ==================== Limpieza ====================
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
-    I1 --> C1[Normalización + Validación de Calidad]
-    I2 --> C1
-    I3 --> C1
-    I4 --> C1
-    I5 --> C1
+I1 --> C1[Normalización + Validación de Calidad]
+I2 --> C1
+I3 --> C1
+I4 --> C1
+I5 --> C1
 end
 
-%% ==================== Modelo Semántico ====================
-subgraph Semantic["🟨 Capa 2<br>Modelo Semántico Empresarial"]
-    SpacerSemantic[" "]  %% Espaciador invisible para separar título
-    C1 --> Row1
-    Row1 --> S1[Cliente<br>Perfil, segmentación, comportamiento]
-    Row1 --> S2[Cuenta<br>Información de cuentas]
-    C1 --> Row2
-    Row2 --> S3[Transacción<br>Movimientos y pagos]
-    Row2 --> S4[Comportamiento de crédito<br>Métricas de riesgo]
-    C1 --> S5[Métricas financieras derivadas<br>KPIs y agregaciones]
+subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
+C1 --> S1[Cliente: perfil, segmentación, comportamiento]
+C1 --> S2[Cuenta: información de cuentas]
+C1 --> S3[Transacción: movimientos y pagos]
+C1 --> S4[Comportamiento de crédito: métricas de riesgo]
+C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
 end
 
-%% ==================== Productos de Datos ====================
-subgraph Products["🟧 Capa 3<br>Productos de Datos según Caso de Uso"]
-    SpacerProducts[" "]  %% Espaciador invisible para separar título
-    RowProd1 --> BI[Visualización y BI]
-    RowProd2 --> FR[Motor de Fraude en Tiempo Real]
-    RowProd3 --> FS[Feature Store para Riesgo]
-
-    S1 --> RowProd1
-    S3 --> RowProd2
-    S4 --> RowProd3
+subgraph Products["🟧 Capa 3 - Productos de Datos"]
+S1 --> BI[Visualización y BI]
+S3 --> FR[Motor de Fraude en Tiempo Real]
+S4 --> FS[Feature Store para Riesgo]
 end

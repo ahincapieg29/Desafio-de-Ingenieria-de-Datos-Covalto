@@ -173,7 +173,7 @@ Incluye:
 # 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
-flowchart LR
+flowchart TB
 %% ==================== Fuentes ====================
 subgraph Sources["🔹 Fuentes de Datos"]
     A[Declaraciones Anuales XML]
@@ -185,7 +185,7 @@ end
 
 %% ==================== Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-    I0[ ]  %% Espaciador para que el título quede limpio
+    I0[" "]
     A --> I1[Regulación + Colas de Trabajo]
     B --> I2[Ingesta en Streaming + Captura de Cambios]
     C --> I3[Extracción Batch + Reglas de Calidad + CDC]
@@ -195,7 +195,7 @@ end
 
 %% ==================== Limpieza ====================
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
-    P0[ ]  %% Espaciador
+    P0[" "]
     I1 --> C1[Normalización + Validación de Calidad]
     I2 --> C1
     I3 --> C1
@@ -205,7 +205,7 @@ end
 
 %% ==================== Modelo Semántico ====================
 subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
-    S0[ ]  %% Espaciador para no tapar título
+    S0[" "]
     C1 --> S1[Cliente: perfil, segmentación, comportamiento]
     C1 --> S2[Cuenta: información de cuentas]
     C1 --> S3[Transacción: movimientos y pagos]
@@ -215,7 +215,7 @@ end
 
 %% ==================== Productos de Datos ====================
 subgraph Products["🟧 Capa 3 - Productos de Datos según Caso de Uso"]
-    P3_0[ ]  %% Espaciador
+    P3_0[" "]
     S1 --> BI[Visualización y BI]
     S3 --> FR[Motor de Fraude en Tiempo Real]
     S4 --> FS[Feature Store para Riesgo]

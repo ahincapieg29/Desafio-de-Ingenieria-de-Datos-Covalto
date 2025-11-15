@@ -57,6 +57,7 @@ La solución aborda simultáneamente **necesidades de negocio**, **restricciones
 - **Real-time + batch coexistentes** — cada caso usa su mejor patrón.  
 - **Trazabilidad y gobernanza aplicadas desde el diseño.**  
 - **Escalabilidad horizontal** — APIs externas con límites requieren paralelismo y control.  
+- **Calidad y monitoreo continuo** — validaciones automáticas y alertas.
 
 ---
 
@@ -64,37 +65,39 @@ La solución aborda simultáneamente **necesidades de negocio**, **restricciones
 
 ---
 
-## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming)**
+## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming + CDC)**
 
 ### **Data Sources y estrategias:**
 
 #### **A. Annual Tax Returns (XML API — rate-limited, sin bulk)**
 - Ingesta controlada con **throttling** y **scheduler distribuido**.  
 - Uso de **work queues** para paralelizar sin romper límites.  
-- Caching administrativo para evitar llamadas repetidas.
+- Caching administrativo para evitar llamadas repetidas.  
 
 #### **B. Credit Card Transactions**
 - **API JSON (streaming + bulk):** conexión a **streaming ingestion** (Pub/Sub / Kafka).  
 - **Pg interna (data quality baja):**  
-  - Perfilamiento  
-  - Imputación  
-  - Reconciliación  
-  - Auditoría de integridad  
+  - **CDC (Change Data Capture)** para capturar solo cambios  
+  - Perfilamiento y análisis de integridad  
+  - Imputación y normalización  
+  - Auditoría y reconciliación  
 
 #### **C. Bank Statements (XML + PDFs/Imágenes en S3)**
-- XML → parseo estructurado.  
-- PDF/imagen → OCR + NLP para extraer entidades.  
-- ML para estandarizar campos dudosos / manuscritos.
+- XML → parseo estructurado con validación de esquema  
+- PDF/imagen → OCR + NLP para extraer entidades  
+- ML para estandarizar campos dudosos / manuscritos  
+- **Reglas de calidad:** completitud, consistencia, validación de tipos  
 
 ---
 
 ### **Tecnologías sugeridas:**
 
 - **Streaming:** Kafka / PubSub  
-- **Batch orchestration:** Airflow  
-- **Data Lake:** GCS / S3 en formato Parquet  
+- **Batch orchestration:** Airflow / Databricks Jobs  
+- **Data Lake:** GCS / S3 en formato Parquet o Delta  
 - **OCR:** AWS Textract / GCP Document AI  
 - **ETL/ELT:** Spark, Databricks, Beam  
+- **CDC:** Debezium / Fivetran / Change Data Streams  
 
 ---
 
@@ -109,14 +112,19 @@ Incluye:
 - Detección de duplicados  
 - Validación contra reglas de negocio  
 - Auditoría y linaje automático  
+- **Calidad de datos:**  
+  - Completeness checks  
+  - Pattern & type validation  
+  - Consistency across sources  
+  - Alertas automáticas y métricas de calidad  
 
-📌 **Resultado:** Tablas **Clean** con consistencia garantizada.
+📌 **Resultado:** Tablas **Clean** con consistencia garantizada y linaje rastreable.
 
 ---
 
 ## 🥉 **Capa 2 — Modelo Semántico Empresarial ("Conformed Layer")**
 
-Aquí se diseñan los modelos con significados únicos:
+Modelos con significados únicos:
 
 - Customer  
 - Account  
@@ -127,7 +135,8 @@ Aquí se diseñan los modelos con significados únicos:
 **Valor:**  
 - Elimina polysemy  
 - Facilita self-service  
-- Aporta entendimiento estándar a analistas, riesgo y fraude
+- Aporta entendimiento estándar a analistas, riesgo y fraude  
+- Integración CDC para mantener frescura y consistencia  
 
 ---
 
@@ -138,6 +147,7 @@ Aquí se diseñan los modelos con significados únicos:
 - Exposición controlada por permisos  
 - Diccionario de datos vivo  
 - Campos normalizados y validados  
+- **Alertas de calidad para analistas**  
 
 🎯 Los analistas crean reportes **sin depender del equipo de ingeniería**.
 
@@ -150,6 +160,7 @@ Aquí se diseñan los modelos con significados únicos:
 - Versionado de features  
 - Tiempos de validez (point-in-time correctness)  
 - Pipelines batch y streaming sincronizados  
+- **Validaciones de integridad y calidad** para features críticos  
 
 🎯 Garantiza fairness, reproducibilidad y precisión en modelos hipotecarios.
 
@@ -160,6 +171,7 @@ Aquí se diseñan los modelos con significados únicos:
 - Enriquecimiento con Features de riesgo  
 - Scores en línea + almacenamiento en cola  
 - Detección basada en reglas + ML  
+- **Alertas automáticas ante inconsistencias o latencias**  
 
 🎯 Velocidad y precisión para proteger la operación bancaria.
 
@@ -167,22 +179,22 @@ Aquí se diseñan los modelos con significados únicos:
 
 # 🛡️ 4. Gobernanza, Calidad y Confianza
 
-Una arquitectura bancaria debe ser **segura, auditable y confiable**.
-
-Incluye:
+Arquitectura segura, auditable y confiable:
 
 - Catálogo y diccionario de datos  
 - Gestión de acceso: RBAC + fines regulatorios  
 - Data Contracts entre squads  
 - Monitoreo de pipelines (SLAs / SLIs / SLOs)  
 - Validaciones automáticas (Great Expectations / Data Quality Rules)  
+- **Linaje completo** desde origen hasta consumo  
 
-🎯 **Beneficio:** datos confiables para BI, riesgo y fraude.
+🎯 **Beneficio:** datos confiables para BI, riesgo y fraude, con trazabilidad y alertas proactivas.
 
 ---
 
 # 🧠 5. Diagrama de Arquitectura (Mermaid)
 
+```mermaid
 flowchart LR
 
 subgraph Sources["🔹 Data Sources"]
@@ -193,16 +205,16 @@ D[Bank Statements XML]
 E[PDFs e Imágenes en S3]
 end
 
-subgraph Ingestion["🟦 Capa 0 - Ingesta"]
+subgraph Ingestion["🟦 Capa 0 - Ingesta + CDC"]
 A --> I1[Throttle + Queue Workers]
-B --> I2[Streaming Ingestion]
-C --> I3[Batch Extract + DQ Checks]
+B --> I2[Streaming Ingestion + CDC]
+C --> I3[Batch Extract + DQ Checks + CDC]
 D --> I4[XML Parser]
 E --> I5[OCR + NLP Extraction]
 end
 
-subgraph Processing["🟩 Capa 1 - Clean"]
-I1 --> C1[Normalization]
+subgraph Processing["🟩 Capa 1 - Clean / Normalización"]
+I1 --> C1[Normalization + DQ Validation]
 I2 --> C1
 I3 --> C1
 I4 --> C1
@@ -221,4 +233,3 @@ S1 --> BI[Self-Service BI Layer]
 S3 --> FR[Fraud Streaming Engine]
 S4 --> FS[Feature Store - Risk]
 end
-

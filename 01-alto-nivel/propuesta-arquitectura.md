@@ -176,6 +176,7 @@ Incluye:
 flowchart LR
 
 subgraph Sources["🔹 Fuentes de Datos"]
+Spacer1[" "] 
 A[Declaraciones Anuales XML]
 B[Transacciones de Tarjetas JSON]
 C[Bases de Datos Internas]
@@ -184,6 +185,7 @@ E[PDFs e Imágenes en S3]
 end
 
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
+Spacer1[" "] 
 A --> I1[Regulación + Colas de Trabajo]
 B --> I2[Ingesta en Streaming + Captura de Cambios]
 C --> I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
@@ -192,6 +194,7 @@ E --> I5[OCR y Extracción NLP]
 end
 
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
+Spacer1[" "] 
 I1 --> C1[Normalización + Validación de Calidad]
 I2 --> C1
 I3 --> C1
@@ -199,22 +202,21 @@ I4 --> C1
 I5 --> C1
 end
 
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
-    style Semantic fill:#ffffcc
-    Spacer1[" "] 
-    C1 --> S1["Cliente<br>Perfil, segmentación,<br>comportamiento"]
-    C1 --> S2["Cuenta<br>Información de cuentas"]
-    C1 --> S3["Transacción<br>Movimientos y pagos"]
-    C1 --> S4["Comportamiento de crédito<br>Métricas de riesgo"]
-    C1 --> S5["Métricas financieras derivadas<br>KPIs y agregaciones"]
+subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
+Spacer1[" "] 
+C1 --> S1[Cliente: perfil, segmentación, comportamiento]
+C1 --> S2[Cuenta: información de cuentas]
+C1 --> S3[Transacción: movimientos y pagos]
+C1 --> S4[Comportamiento de crédito: métricas de riesgo]
+C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
 end
 
 subgraph Products["🟧 Capa 3 - Productos de Datos"]
+Spacer1[" "] 
 S1 --> BI[Visualización y BI]
 S3 --> FR[Motor de Fraude en Tiempo Real]
 S4 --> FS[Feature Store para Riesgo]
 end
-
 
 
 

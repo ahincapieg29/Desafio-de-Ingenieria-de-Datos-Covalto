@@ -1,7 +1,7 @@
 # 🧭 Propuesta Integral: Estabilización de Mocks y Dependencias Inter-Equipos
 
 **Por:** Alejandra Hincapié Garzón  
-**Cargo:** Gerente de Ingeniería de Datos e IA — Liderazgo sistémico, humano y técnico  
+**Cargo:** Gerente de Ingeniería de Datos e IA — Liderazgo técnico y sistémico  
 
 “Propongo un enfoque integral que estabiliza los mocks, mejora la colaboración inter-equipos y empodera al equipo mediante contratos versionados, pipelines automáticos y liderazgo sistémico.”
 

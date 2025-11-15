@@ -173,42 +173,47 @@ Incluye:
 # 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
-flowchart LR
+flowchart TB
 
+%% ==================== Fuentes ====================
 subgraph Sources["🔹 Fuentes de Datos"]
-A[Declaraciones Anuales XML]
-B[Transacciones de Tarjetas JSON]
-C[Bases de Datos Internas]
-D[Estados de Cuenta XML]
-E[PDFs e Imágenes en S3]
+    A[Declaraciones Anuales XML]
+    B[Transacciones de Tarjetas JSON]
+    C[Bases de Datos Internas]
+    D[Estados de Cuenta XML]
+    E[PDFs e Imágenes en S3]
 end
 
+%% ==================== Capa 0 - Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-A --> I1[Regulación + Colas de Trabajo]
-B --> I2[Ingesta en Streaming + Captura de Cambios]
-C --> I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
-D --> I4[Parseo XML]
-E --> I5[OCR y Extracción NLP]
+    A --> I1[Regulación + Colas de Trabajo]
+    B --> I2[Ingesta en Streaming + CDC]
+    C --> I3[Extracción Batch + Calidad + CDC]
+    D --> I4[Parseo XML]
+    E --> I5[OCR + NLP]
 end
 
+%% ==================== Capa 1 - Limpieza ====================
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
-I1 --> C1[Normalización + Validación de Calidad]
-I2 --> C1
-I3 --> C1
-I4 --> C1
-I5 --> C1
+    I1 --> C1[Normalización + Validación]
+    I2 --> C1
+    I3 --> C1
+    I4 --> C1
+    I5 --> C1
 end
 
+%% ==================== Capa 2 - Modelo Semántico ====================
 subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
-C1 --> S1[Cliente]
-C1 --> S2[Cuenta
-C1 --> S3[Transacción]
-C1 --> S4[Comportamiento de crédito]
-C1 --> S5[Métricas financieras derivadas]
+    C1 --> S1[Cliente]
+    C1 --> S2[Cuenta]
+    C1 --> S3[Transacción]
+    C1 --> S4[Crédito]
+    C1 --> S5[KPI Finanzas]
 end
 
+%% ==================== Capa 3 - Productos de Datos ====================
 subgraph Products["🟧 Capa 3 - Productos de Datos"]
-S1 --> BI[Visualización y BI]
-S3 --> FR[Motor de Fraude en Tiempo Real]
-S4 --> FS[Feature Store para Riesgo]
+    S1 --> BI[Visualización / BI]
+    S3 --> FR[Fraude Tiempo Real]
+    S4 --> FS[Feature Store]
 end

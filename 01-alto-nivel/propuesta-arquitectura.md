@@ -4,6 +4,18 @@
 
 ---
 
+## 🌐 Modelo en Capas y Agnóstico de Nube
+
+Esta arquitectura está diseñada **en capas**, lo que permite:
+
+- Separar responsabilidades: ingestión, limpieza, semántica y productos de datos.  
+- Facilitar mantenibilidad, escalabilidad y adopción de nuevas tecnologías sin romper procesos existentes.  
+- Aislar cambios: se pueden mejorar capas individuales sin afectar al resto.  
+
+Además, es **agnóstica de nube**, lo que significa que **puede implementarse en AWS, GCP, Azure o entornos híbridos**, usando servicios equivalentes según disponibilidad y costos.
+
+---
+
 ## 🎯 Propósito de esta Propuesta
 
 Diseñar una **arquitectura moderna, escalable y segura** que permita a COVALTO habilitar:
@@ -20,81 +32,59 @@ Esta solución integra simultáneamente **necesidades de negocio**, **restriccio
 # 🧩 1. Resumen de los Casos de Uso
 
 ### **1️⃣ Visualización del Comportamiento del Cliente**
-**Necesidad:** analistas quieren crear reportes propios sin depender de desarrolladores.  
-**Problemas actuales:**  
-- Solicitudes ad-hoc que generan retrasos  
-- Diferencias de significado entre distintas fuentes  
-- Datos dispersos en múltiples sistemas  
-- Ausencia de un modelo de datos común  
+**Dolores actuales:**  
+- Solicitudes ad-hoc que generan retrasos → **Solución:** self-service BI con datos normalizados.  
+- Diferencias de significado entre fuentes → **Solución:** modelo semántico único.  
+- Datos dispersos en múltiples sistemas → **Solución:** ingesta unificada y catálogo de datos.  
+- Ausencia de un modelo de datos común → **Solución:** diccionario de datos y modelo empresarial.  
 
 ---
 
 ### **2️⃣ Evaluación de Riesgo para Hipotecas**
-**Necesidad:** modelos basados en características derivadas, no en datos crudos.  
-**Requiere:**  
-- Procesos confiables y repetibles  
-- Almacenamiento de características gobernado y versionado  
-- Trazabilidad completa  
-- Procesamiento en lotes y casi en tiempo real  
+**Dolores actuales:**  
+- Modelos dependientes de datos crudos → **Solución:** Feature Store con características versionadas.  
+- Procesos no repetibles → **Solución:** pipelines reproducibles batch y streaming.  
+- Falta de trazabilidad → **Solución:** linaje completo y auditoría automática.  
 
 ---
 
 ### **3️⃣ Monitoreo de Fraude en Tiempo Real**
-**Necesidad:** ingestión de datos en streaming y acceso a características usadas en riesgo.  
-**Requiere:**  
-- Baja latencia  
-- Confiabilidad en el procesamiento  
-- Procesamiento basado en eventos  
-- Acceso rápido a características de distintas fuentes
+**Dolores actuales:**  
+- Latencia alta y accesos inconsistentes → **Solución:** ingestión streaming con baja latencia y acceso unificado.  
+- Procesamiento poco confiable → **Solución:** arquitectura basada en eventos con alertas automáticas.  
+- Acceso fragmentado a características → **Solución:** Feature Store accesible desde tiempo real y batch.  
 
 ---
 
 # 🏛️ 2. Principios de Diseño
 
-- **Datos como Producto:** cada conjunto de datos tiene responsable, documentación, acuerdos de servicio y contratos claros.  
-- **Semántica compartida:** diccionario de datos y modelo común para evitar confusión.  
-- **Arquitectura en capas:** cada capa tiene funciones bien definidas.  
-- **Procesamiento en tiempo real y por lotes:** cada caso usa la estrategia más adecuada.  
-- **Trazabilidad y gobernanza desde el diseño:** todos los datos son auditable y rastreables.  
-- **Escalabilidad horizontal:** manejo eficiente de límites de APIs y paralelismo.  
-- **Calidad de datos:** validaciones automáticas, alertas y métricas de desempeño.
+- **Datos como Producto:** responsable, documentación, SLA y contratos claros.  
+- **Semántica compartida:** diccionario y modelo común.  
+- **Arquitectura en capas:** responsabilidades separadas y mantenibles.  
+- **Procesamiento batch y en tiempo real:** estrategia según necesidad.  
+- **Trazabilidad y gobernanza desde el diseño:** datos auditables y rastreables.  
+- **Escalabilidad horizontal:** manejo eficiente de APIs y paralelismo.  
+- **Calidad de datos:** validaciones automáticas, alertas y métricas de desempeño.  
 
 ---
 
 # 🏗️ 3. Arquitectura Propuesta (Visión 360°)
 
----
+## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming + CDC)**
 
-## 🥇 **Capa 0 — Ingesta Unificada (Batch + Streaming + Captura de Cambios)**
+| Fuente                                           | Tipo                           | Acceso                                            | Estrategia                                                                     |
+| ------------------------------------------------ | ------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Declaraciones de Impuestos Anuales               | API XML                        | Token + autorización digital                      | Ingestión batch, control de límites, procesamiento ETL a Data Lake raw         |
+| Historial de Transacciones de Tarjeta de Crédito | API JSON / PostgreSQL interno  | API: token, bulk & streaming; DB: baja integridad | Pipelines streaming desde API; ETL para DBs internas con limpieza y validación |
+| Extractos Bancarios                              | API XML / S3 (PDFs e imágenes) | API: token + firma; S3: no estructurado           | ETL batch/streaming para XML; OCR y ML para PDFs e imágenes                    |
 
-### **Fuentes de Datos y Estrategias**
+**Notas adicionales:**
 
-#### **A. Declaraciones Anuales de Impuestos (API XML limitada)**
-- Control de ingestión con **regulación de velocidad** y programación distribuida  
-- Uso de **colas de trabajo** para paralelizar sin exceder límites  
-- Caché para evitar llamadas repetidas
+- Declaraciones de Impuestos: colas de trabajo para paralelizar llamadas sin exceder límites.  
+- Transacciones de Tarjeta: captura de cambios (CDC) para mantener datos actualizados; validación de integridad y consistencia.  
+- Extractos Bancarios: XML → parseo estructurado; PDFs/Imágenes → OCR + NLP para extracción; validaciones de completitud y consistencia.  
 
-#### **B. Transacciones de Tarjetas de Crédito**
-- Ingesta desde API JSON y bases internas  
-- **Captura de cambios (CDC):** solo se traen las filas nuevas o modificadas  
-- Validaciones de calidad: integridad, consistencia y completitud  
-- Auditoría de reconciliación con sistemas contables  
-
-#### **C. Estados de Cuenta Bancarios (XML y PDFs/Imágenes)**
-- XML → parseo estructurado con validación de esquema  
-- PDF/Imagen → OCR y procesamiento de lenguaje para extraer datos relevantes  
-- Inteligencia artificial para estandarizar campos dudosos  
-- Reglas de calidad: completitud, consistencia y validez de tipos
-
----
-
-### **Tecnologías sugeridas:**
-- Mensajería en tiempo real: Kafka, Pub/Sub  
-- Orquestación de procesos por lotes: Airflow, Databricks Jobs  
-- Almacenamiento: Data Lake en GCS o S3, formatos Parquet o Delta  
-- OCR: AWS Textract o GCP Document AI  
-- Procesamiento de datos: Spark, Beam, Databricks  
-- Captura de cambios: Debezium, Fivetran o Change Data Streams  
+**Tecnologías sugeridas:** Kafka / PubSub, Airflow / Databricks Jobs, S3 / GCS con Parquet / Delta, OCR (AWS Textract / GCP Document AI), Spark / Beam, Debezium / Fivetran  
 
 ---
 
@@ -105,11 +95,11 @@ Objetivo: **eliminar ambigüedad y unificar la semántica de todos los datos**.
 Incluye:
 
 - Tipificación de datos  
-- Estandarización de fechas, valores monetarios y identificadores  
+- Estandarización de fechas, valores monetarios e identificadores  
 - Detección de duplicados  
 - Validación contra reglas de negocio  
 - Auditoría y linaje automático  
-- Validaciones de calidad: completitud, consistencia, patrones de datos y alertas
+- Validaciones de calidad: completitud, consistencia, patrones de datos y alertas  
 
 📌 **Resultado:** Tablas limpias y consistentes, listas para análisis.
 
@@ -139,7 +129,7 @@ Creación de modelos con significados únicos:
 - Exposición de datos normalizados y validados  
 - Diccionario de datos actualizado  
 - Acceso controlado según permisos  
-- Alertas automáticas si los datos pierden consistencia
+- Alertas automáticas si los datos pierden consistencia  
 
 🎯 Analistas pueden crear reportes sin depender de ingeniería.
 
@@ -149,7 +139,7 @@ Creación de modelos con significados únicos:
 - Almacenamiento de características con versionamiento  
 - Tiempo de validez de cada característica  
 - Procesamiento batch y en streaming sincronizado  
-- Validaciones de calidad y consistencia de los datos
+- Validaciones de calidad y consistencia de los datos  
 
 🎯 Garantiza reproducibilidad, equidad y precisión en los modelos de riesgo.
 
@@ -160,15 +150,13 @@ Creación de modelos con significados únicos:
 - Cálculo de puntuaciones de riesgo en línea  
 - Almacenamiento temporal para colas de eventos  
 - Detección de patrones mediante reglas y modelos predictivos  
-- Alertas automáticas ante inconsistencias o retrasos
+- Alertas automáticas ante inconsistencias o retrasos  
 
 🎯 Velocidad y precisión para proteger la operación bancaria.
 
 ---
 
 # 🛡️ 4. Gobernanza, Calidad y Confianza
-
-La arquitectura garantiza **seguridad, auditabilidad y confianza**:
 
 - Catálogo y diccionario de datos  
 - Gestión de acceso basada en roles y cumplimiento regulatorio  
@@ -190,7 +178,7 @@ subgraph Sources["🔹 Fuentes de Datos"]
 A[Declaraciones Anuales XML]
 B[Transacciones de Tarjetas JSON]
 C[Bases de Datos Internas]
-D[Estados de Cuenta XML]
+D[Extractos Bancarios XML]
 E[PDFs e Imágenes en S3]
 end
 

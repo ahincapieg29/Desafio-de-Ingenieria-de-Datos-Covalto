@@ -1,5 +1,5 @@
 # 🏗️ Arquitectura Integral de Datos para COVALTO  
-### **Solución al High Level Problem — Por: Alejandra Hincapié Garzón**  
+### **Por: Alejandra Hincapié Garzón**  
 **Gerente de Ingeniería de Datos e IA — Liderazgo técnico, estratégico y sistémico**
 
 ---

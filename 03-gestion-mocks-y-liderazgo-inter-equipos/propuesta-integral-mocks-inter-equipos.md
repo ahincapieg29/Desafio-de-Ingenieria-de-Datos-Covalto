@@ -13,11 +13,11 @@ COVALTO opera en un **entorno fintech regulado**, donde la **estabilidad, trazab
 
 Los incidentes en **staging** o **producción** impactan:
 
-- 🏢 Experiencia de cliente interno y externo
-- ⚖️ Procesos de riesgo y cumplimiento regulatorio 
-- 🤖 Confianza en analítica avanzada e IA  
-- ⏱ Velocidad de entrega de nuevas funcionalidades  
-- 💡 Moral y retención del equipo técnico  
+- Experiencia de cliente interno y externo
+- Procesos de riesgo y cumplimiento regulatorio 
+- Confianza en analítica avanzada e IA  
+- Velocidad de entrega de nuevas funcionalidades  
+- Moral y retención del equipo técnico  
 
 > 🔹 Nota: un *mock* es una **imitación de un servicio real**, utilizada para pruebas antes de que el servicio completo esté disponible.  
 
@@ -25,10 +25,10 @@ Los incidentes en **staging** o **producción** impactan:
 
 Como Gerente de Ingeniería de Datos e IA, mi objetivo es proteger:  
 
-1. 🔒 Operación bancaria y experiencia del cliente  
-2. 📊 Credibilidad del dato y la IA  
-3. 🤝 Calidad, resiliencia y alineación inter-equipos  
-4. 💪 Cultura técnica y emocional del equipo  
+1. Operación bancaria y experiencia del cliente  
+2. Credibilidad del dato y la IA  
+3. Calidad, resiliencia y alineación inter-equipos  
+4. Cultura técnica y emocional del equipo  
 
 **Enfoque:** técnico, operativo, cultural y relacional.
 
@@ -47,13 +47,13 @@ Como Gerente de Ingeniería de Datos e IA, mi objetivo es proteger:
 
 ## 🎯 Objetivos Estratégicos
 
-1. 🛠 Garantizar estabilidad técnica en todos los entornos  
-2. 🤝 Fortalecer colaboraciones inter-equipos: confianza, respeto y comunicación  
-3. ⏱ Reducir incidentes y mejorar TTD/TTR  
+1. Garantizar estabilidad técnica en todos los entornos  
+2. Fortalecer colaboraciones inter-equipos: confianza, respeto y comunicación  
+3. Reducir incidentes y mejorar TTD/TTR  
    - *TTD (Time-to-Detect)* = tiempo promedio para detectar un problema  
    - *TTR (Time-to-Recover)* = tiempo promedio para resolver un problema  
-4. 📚 Desarrollar una cultura de ingeniería madura: estándares, pruebas, versionado y ownership  
-5. 💡 Empoderar al equipo, reduciendo dependencias externas y fomentando autonomía  
+4. Desarrollar una cultura de ingeniería madura: estándares, pruebas, versionado y ownership  
+5. Empoderar al equipo, reduciendo dependencias externas y fomentando autonomía  
 
 ---
 
@@ -63,10 +63,10 @@ Como Gerente de Ingeniería de Datos e IA, mi objetivo es proteger:
 
 Recolectamos:  
 
-- 📉 Casos donde *mock ≠ servicio real*  
-- 💰 Impacto operativo y financiero  
-- 🕒 Horas perdidas  
-- 🧠 Costos emocionales del equipo  
+- Casos donde *mock ≠ servicio real*  
+- Impacto operativo y financiero  
+- Horas perdidas  
+- Costos emocionales del equipo  
 
 Se presentan con gráficos sencillos:
 

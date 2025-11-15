@@ -203,7 +203,7 @@ subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
 end
 
 %% ==================== Capa 2 - Modelo Semántico ====================
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
+subgraph Semantic["🟨 Capa 2 - Modelo"]
     C1 --> S1[Cliente]
     C1 --> S2[Cuenta]
     C1 --> S3[Transacción]
@@ -212,7 +212,7 @@ subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
 end
 
 %% ==================== Capa 3 - Productos de Datos ====================
-subgraph Products["🟧 Capa 3 - Productos de Datos"]
+subgraph Products["🟧 Capa 3 - Productos"]
     S1 --> BI[Visualización / BI]
     S3 --> FR[Fraude Tiempo Real]
     S4 --> FS[Feature Store]

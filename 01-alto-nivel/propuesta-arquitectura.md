@@ -33,25 +33,25 @@ Esta solución integra simultáneamente **necesidades de negocio**, **restriccio
 
 ### **1️⃣ Visualización del Comportamiento del Cliente**
 **Dolores actuales:**  
-- Solicitudes ad-hoc que generan retrasos → **Solución:** self-service BI con datos normalizados.  
-- Diferencias de significado entre fuentes → **Solución:** modelo semántico único.  
-- Datos dispersos en múltiples sistemas → **Solución:** ingesta unificada y catálogo de datos.  
-- Ausencia de un modelo de datos común → **Solución:** diccionario de datos y modelo empresarial.  
+- Solicitudes ad-hoc que generan retrasos → **Solución:** Self-service BI con datos normalizados.  
+- Diferencias de significado entre fuentes → **Solución:** Modelo semántico único.  
+- Datos dispersos en múltiples sistemas → **Solución:** Ingesta unificada y catálogo de datos.  
+- Ausencia de un modelo de datos común → **Solución:** Diccionario de datos y modelo empresarial.  
 
 ---
 
 ### **2️⃣ Evaluación de Riesgo para Hipotecas**
 **Dolores actuales:**  
 - Modelos dependientes de datos crudos → **Solución:** Feature Store con características versionadas.  
-- Procesos no repetibles → **Solución:** pipelines reproducibles batch y streaming.  
-- Falta de trazabilidad → **Solución:** linaje completo y auditoría automática.  
+- Procesos no repetibles → **Solución:** Pipelines reproducibles batch y streaming.  
+- Falta de trazabilidad → **Solución:** Linaje completo y auditoría automática.  
 
 ---
 
 ### **3️⃣ Monitoreo de Fraude en Tiempo Real**
 **Dolores actuales:**  
-- Latencia alta y accesos inconsistentes → **Solución:** ingestión streaming con baja latencia y acceso unificado.  
-- Procesamiento poco confiable → **Solución:** arquitectura basada en eventos con alertas automáticas.  
+- Latencia alta y accesos inconsistentes → **Solución:** Ingestión streaming con baja latencia y acceso unificado.  
+- Procesamiento poco confiable → **Solución:** Arquitectura basada en eventos con alertas automáticas.  
 - Acceso fragmentado a características → **Solución:** Feature Store accesible desde tiempo real y batch.  
 
 ---

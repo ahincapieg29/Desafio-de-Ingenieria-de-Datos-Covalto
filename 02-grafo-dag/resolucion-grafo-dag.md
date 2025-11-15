@@ -1,50 +1,51 @@
-🧭 Resolución Estratégica del Desafío de Grafo Dirigido Acíclico (DAG)
+# 🧭 Análisis y Resolución del Desafío de Grafo Dirigido Acíclico (DAG)
 
-Por: Alejandra Hincapié Garzón
-Cargo: Gerente de Ingeniería de Datos e IA — Liderazgo técnico, sistémico y estratégico
+**Por:** Alejandra Hincapié Garzón  
+**Cargo:** Gerente de Ingeniería de Datos e IA — Liderazgo técnico y sistémico  
 
-🌟 Contexto del Ejercicio
+---
 
-Este notebook aborda el Desafío de Ingeniería de Datos – Problema de Bajo Nivel de Covalto, centrado en la identificación de nodos críticos y rutas estratégicas dentro de un DAG con aristas ponderadas.
+## 🌟 Contexto del Ejercicio
 
-El enfoque combina:
+Este notebook aborda el **Desafío de Ingeniería de Datos – Problema de Bajo Nivel** de Covalto.  
 
-📌 Análisis de caminos y centralidad para identificar nodos estratégicos.
+El objetivo es aplicar **análisis de grafos, optimización y estrategia de nodos** para:  
 
-📌 Visualización clara para stakeholders técnicos y de negocio.
+- 📌 Identificar el nodo más alcanzable desde la fuente 0.  
+- 📌 Listar y ordenar los caminos hacia dicho nodo según su costo total, de mayor a menor.  
+- 📌 Evaluar la inserción de un nuevo vértice cumpliendo condiciones de exclusividad.  
+- 📌 Visualizar el DAG y los caminos estratégicos.  
+- 📌 Documentar hallazgos de manera clara, trazable y reproducible.
 
-📌 Documentación profesional y reproducible, fomentando buenas prácticas de ingeniería de datos.
+> 🔹 Nota: Se trabaja sobre un **Grafo Dirigido Acíclico (DAG)** con aristas ponderadas, utilizando NetworkX y visualización con Matplotlib.
 
-🔹 Nota: Se utiliza NetworkX para análisis de grafos y Matplotlib para visualización.
+---
 
-🎯 Objetivos Estratégicos
+## 🎯 Objetivos Estratégicos
 
-🧠 Analizar exhaustivamente todos los caminos desde la fuente para detectar puntos críticos de flujo.
+1. 🧠 Analizar exhaustivamente los caminos posibles desde la fuente.  
+2. 🔍 Identificar nodos críticos y rutas estratégicas para decisiones de negocio.  
+3. ⚙️ Evaluar posibles modificaciones estructurales y su impacto en la red.  
+4. 📊 Generar insights claros mediante visualización y documentación profesional.  
+5. 💡 Fomentar buenas prácticas en ingeniería de datos: trazabilidad, pruebas y claridad en el análisis.
 
-🔍 Identificar nodos con mayor alcance y centralidad que impactan decisiones de negocio y analítica avanzada.
+---
 
-⚙️ Evaluar la inserción de nuevos nodos y su efecto en la estructura del DAG, considerando condiciones de exclusividad y trade-offs.
+## 🧩 Contenido del Notebook
 
-📊 Comunicar insights estratégicos mediante visualizaciones precisas, promoviendo claridad y trazabilidad.
+- 🔹 **Paso 0:** Importación de librerías y configuraciones iniciales  
+- 🔹 **Paso 1:** Construcción y visualización del DAG  
+- 🔹 **Paso 2:** Encontrar todos los caminos desde el vértice fuente 0  
+- 🔹 **Paso 3:** Contar cuántos caminos llegan a cada nodo  
+- 🔹 **Paso 4:** Listar caminos hacia el nodo más alcanzable, ordenados por costo  
+- 🔹 **Paso 5:** Intento de inserción de un nuevo vértice V' cumpliendo condiciones  
+- 🔹 **Paso 6:** Visualización final del DAG y caminos destacados  
+- 🔹 **Paso 7:** Resumen de hallazgos y conclusiones estratégicas
 
-💡 Fomentar buenas prácticas de ingeniería de datos, incluyendo pruebas, trazabilidad, modularidad y documentación profesional.
+---
 
-🧩 Contenido del Notebook
-Paso	Descripción
-🔹 Paso 0	Importación de librerías y configuración inicial
-🔹 Paso 1	Construcción y visualización del DAG original, destacando la fuente 0
-🔹 Paso 2	Identificación de todos los caminos posibles desde la fuente 0
-🔹 Paso 3	Conteo de caminos por nodo para determinar el nodo más alcanzable
-🔹 Paso 4	Filtrado y ordenamiento de caminos hacia el nodo más alcanzable por costo descendente
-🔹 Paso 5	Evaluación de inserción de nuevo nodo V', respetando condiciones de exclusividad
-🔹 Paso 6	Visualización final del DAG con caminos críticos y nodo V' destacado
-🔹 Paso 7	Resumen de hallazgos, implicaciones estratégicas y recomendaciones para negocio y analítica
-📌 Ejecución Recomendada
+## 📌 Cómo ejecutar
 
-Abrir el notebook analisis_dag_covalto.ipynb en Jupyter o VSCode.
-
-Ejecutar las celdas en orden, asegurando reproducibilidad.
-
-Revisar la sección final de hallazgos y conclusiones estratégicas, que conecta análisis técnico con decisiones de negocio.
-
-Utilizar el notebook como referencia para simulaciones futuras sobre DAGs críticos en producción o entornos de prueba.
+1. Abrir el notebook `analisis_dag_covalto.ipynb` en Jupyter o VSCode.  
+2. Ejecutar todas las celdas en orden.  
+3. Revisar la sección de hallazgos al final para conclusiones clave. 

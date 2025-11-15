@@ -130,11 +130,11 @@ Se presentan con gráficos sencillos:
 
 **Proceso propuesto:**  
 
-1. 🟢 Equipo productor actualiza su servicio  
-2. 🛡 Validaciones automáticas revisan contratos de consumidores  
-3. 📣 Notificación inmediata si hay errores  
-4. 🔄 Regeneración automática de mocks y publicación de nuevas versiones  
-5. ✅ Equipos consumidores adoptan la nueva versión cuando estén listos  
+1. Equipo productor actualiza su servicio  
+2. Validaciones automáticas revisan contratos de consumidores  
+3. Notificación inmediata si hay errores  
+4. Regeneración automática de mocks y publicación de nuevas versiones  
+5. Equipos consumidores adoptan la nueva versión cuando estén listos  
 
 ---
 
@@ -154,11 +154,11 @@ Se presentan con gráficos sencillos:
 
 Aquí integro liderazgo emocional, cultura de datos y gestión sistémica.
 
-- 💖 **Validación emocional:** “Lo que sienten es válido; transformemos esta incomodidad en un sistema fuerte.”  
-- 🔄 **Cambio de narrativa:** De “el otro equipo falla” a “el sistema permite fallas; lo rediseñamos juntos”  
-- 👩‍💻 **Roles de empoderamiento técnico:** Asigno roles que generan protagonismo: contratos, automatizaciones, monitoreo, comunicación  
-- 🏆 **Micro-victorias:** Cada mock corregido o incidente evitado se celebra  
-- 🤝 **Reintegración con el otro equipo:** Promuevo conversaciones neutrales, reglas claras, espacios de trabajo conjunto.La confianza se reconstruye con consistencia, no con discursos.  
+- **Validación emocional:** “Lo que sienten es válido; transformemos esta incomodidad en un sistema fuerte.”  
+- **Cambio de narrativa:** De “el otro equipo falla” a “el sistema permite fallas; lo rediseñamos juntos”  
+- **Roles de empoderamiento técnico:** Asigno roles que generan protagonismo: contratos, automatizaciones, monitoreo, comunicación  
+- **Micro-victorias:** Cada mock corregido o incidente evitado se celebra  
+- **Reintegración con el otro equipo:** Promuevo conversaciones neutrales, reglas claras, espacios de trabajo conjunto.La confianza se reconstruye con consistencia, no con discursos.  
 
 ---
 
@@ -189,12 +189,12 @@ Aquí integro liderazgo emocional, cultura de datos y gestión sistémica.
 
 ### 🚀 Resultados Esperados
 
-- 🔒 Reducción de incidentes en staging y producción  
-- 🔄 Mocks siempre actualizados y confiables  
-- 🤝 Relaciones inter-equipos fluidas y colaborativas  
-- ⚖️ Cumplimiento regulatorio y trazabilidad clara  
-- 💪 Equipo motivado, autónomo y resiliente  
-- 📊 Datos confiables para analítica e IA  
+- Reducción de incidentes en staging y producción  
+- Mocks siempre actualizados y confiables  
+- Relaciones inter-equipos fluidas y colaborativas  
+- Cumplimiento regulatorio y trazabilidad clara  
+- Equipo motivado, autónomo y resiliente  
+- Datos confiables para analítica e IA  
 
 ---
 

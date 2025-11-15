@@ -206,19 +206,10 @@ flowchart LR
     end
 
     subgraph S5["Capa 3 - Productos de Datos"]
-        direction LR
-        subgraph P1["Visualización y BI"]
-            direction TB
-            P1a[Visualización y BI]
-        end
-        subgraph P2["Motor de Fraude"]
-            direction TB
-            P2a[Motor de Fraude en Tiempo Real]
-        end
-        subgraph P3["Feature Store"]
-            direction TB
-            P3a[Feature Store para Riesgo]
-        end
+        direction TB
+        P1[Visualización y BI]
+        P2[Motor de Fraude en Tiempo Real]
+        P3[Feature Store para Riesgo]
     end
 
     %% Conexiones Fuentes -> Ingesta
@@ -242,10 +233,12 @@ flowchart LR
     C1 --> S4c
 
     %% Modelo Semántico -> Productos de Datos
-    S1c --> P1a
-    S3c --> P2a
-    S4c --> P3a
-    S2c -.-> P3a  %% Cuenta conectada opcionalmente al Feature Store
+    S1c --> P1
+    S3c --> P2
+    S4c --> P3
+    S2c -.-> P3  %% Cuenta conectada opcionalmente al Feature Store
+
+
 
 
 

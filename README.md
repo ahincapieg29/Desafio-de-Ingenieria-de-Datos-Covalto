@@ -15,7 +15,7 @@ Solución integral combinando **arquitectura moderna**, **algoritmos robustos** 
 2. **Solución Algorítmica (DAG)**  
    - Identificación de vértices críticos y rutas por costo  
    - Inserción de vértices con restricciones  
-   - Manejo robusto de errores y pruebas automatizadas  
+   - Manejo robusto de errores
 
 3. **Gestión Inter-Equipos**  
    - Contratos versionados y Mock-as-Code  

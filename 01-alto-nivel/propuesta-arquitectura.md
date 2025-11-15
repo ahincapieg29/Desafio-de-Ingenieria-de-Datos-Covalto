@@ -173,7 +173,7 @@ Incluye:
 # 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
-flowchart TB
+flowchart LR
 %% ==================== Fuentes ====================
 subgraph Sources["🔹 Fuentes de Datos"]
     A[Declaraciones Anuales XML]
@@ -183,7 +183,7 @@ subgraph Sources["🔹 Fuentes de Datos"]
     E[PDFs e Imágenes en S3]
 end
 
-%% ==================== Capa 0 - Ingesta ====================
+%% ==================== Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
     A --> I1[Regulación + Colas de Trabajo]
     B --> I2[Ingesta en Streaming + Captura de Cambios]
@@ -192,7 +192,7 @@ subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
     E --> I5[OCR y Extracción NLP]
 end
 
-%% ==================== Capa 1 - Limpieza ====================
+%% ==================== Limpieza ====================
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
     I1 --> C1[Normalización + Validación de Calidad]
     I2 --> C1
@@ -201,25 +201,26 @@ subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
     I5 --> C1
 end
 
-%% ==================== Capa 2 - Modelo Semántico ====================
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
-    C1 --> S1[Cliente: perfil, segmentación, comportamiento]
-    C1 --> S2[Cuenta: información de cuentas]
-    C1 --> S3[Transacción: movimientos y pagos]
-    C1 --> S4[Comportamiento de crédito: métricas de riesgo]
-    C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
+%% ==================== Modelo Semántico ====================
+subgraph Semantic["🟨 Capa 2<br>Modelo Semántico Empresarial"]
+    SpacerSemantic[" "]  %% Espaciador invisible para separar título
+    C1 --> Row1
+    Row1 --> S1[Cliente<br>Perfil, segmentación, comportamiento]
+    Row1 --> S2[Cuenta<br>Información de cuentas]
+    C1 --> Row2
+    Row2 --> S3[Transacción<br>Movimientos y pagos]
+    Row2 --> S4[Comportamiento de crédito<br>Métricas de riesgo]
+    C1 --> S5[Métricas financieras derivadas<br>KPIs y agregaciones]
 end
 
-%% ==================== Capa 3 - Productos de Datos ====================
-subgraph Products["🟧 Capa 3 - Productos de Datos según Caso de Uso"]
-    S1 --> BI[Visualización y BI]
-    S3 --> FR[Motor de Fraude en Tiempo Real]
-    S4 --> FS[Feature Store para Riesgo]
+%% ==================== Productos de Datos ====================
+subgraph Products["🟧 Capa 3<br>Productos de Datos según Caso de Uso"]
+    SpacerProducts[" "]  %% Espaciador invisible para separar título
+    RowProd1 --> BI[Visualización y BI]
+    RowProd2 --> FR[Motor de Fraude en Tiempo Real]
+    RowProd3 --> FS[Feature Store para Riesgo]
+
+    S1 --> RowProd1
+    S3 --> RowProd2
+    S4 --> RowProd3
 end
-
-
-
-
-
-
-

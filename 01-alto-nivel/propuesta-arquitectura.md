@@ -173,55 +173,70 @@ Creación de modelos con significados únicos:
 
 ```mermaid
 flowchart LR
+    %% Columnas como subgraphs para organización visual
 
-%% Fuentes de datos
-subgraph Sources["🔹 Fuentes de Datos"]
-A[Declaraciones Anuales XML]
-B[Transacciones de Tarjetas JSON]
-C[Bases de Datos Internas]
-D[Extractos Bancarios XML]
-E[PDFs e Imágenes en S3]
-end
+    subgraph S1["Fuentes de Datos"]
+        direction TB
+        A[Declaraciones Anuales XML]
+        B[Transacciones de Tarjetas JSON]
+        C[Bases de Datos Internas]
+        D[Extractos Bancarios XML]
+        E[PDFs e Imágenes en S3]
+    end
 
-%% Ingesta
-subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-A --> I1[Regulación + Colas de Trabajo]
-B --> I2[Ingesta en Streaming + Captura de Cambios]
-C --> I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
-D --> I4[Parseo XML]
-E --> I5[OCR y Extracción NLP]
-end
+    subgraph S2["Capa 0 - Ingesta y CDC"]
+        direction TB
+        I1[Regulación + Colas de Trabajo]
+        I2[Ingesta en Streaming + Captura de Cambios]
+        I3[Extracción Batch + Reglas de Calidad + Captura de Cambios]
+        I4[Parseo XML]
+        I5[OCR y Extracción NLP]
+    end
 
-%% Procesamiento
-subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
-I1 --> C1[Normalización + Validación de Calidad]
-I2 --> C1
-I3 --> C1
-I4 --> C1
-I5 --> C1
-end
+    subgraph S3["Capa 1 - Limpieza y Normalización"]
+        direction TB
+        C1[Normalización + Validación de Calidad]
+    end
 
-%% Modelo Semántico
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
-C1 --> S1[Cliente]
-C1 --> S2[Cuenta] 
-C1 --> S3[Transacción]
-C1 --> S4[Métricas Financieras]
-end
+    subgraph S4["Capa 2 - Modelo Semántico"]
+        direction TB
+        S1c[Cliente]
+        S2c[Cuenta]
+        S3c[Transacción]
+        S4c[Métricas Financieras]
+    end
 
-%% Productos de Datos
-subgraph Products["🟧 Capa 3 - Productos de Datos"]
-S1 --> BI[Visualización y BI]
-S3 --> FR[Motor de Fraude en Tiempo Real]
-S4 --> FS[Feature Store para Riesgo]
+    subgraph S5["Capa 3 - Productos de Datos"]
+        direction TB
+        P1[Visualización y BI]
+        P2[Motor de Fraude en Tiempo Real]
+        P3[Feature Store para Riesgo]
+    end
 
-%% opcional: Cuenta como apoyo
-S2 -.-> FS
-end
+    %% Conexiones Fuentes -> Ingesta
+    A --> I1
+    B --> I2
+    C --> I3
+    D --> I4
+    E --> I5
 
-%% Estilo para separar nodos y que no se superpongan
-style S1 fill:#ffefc0,stroke:#333,stroke-width:1px
-style S2 fill:#ffe0e0,stroke:#333,stroke-width:1px
-style S3 fill:#c0ffd8,stroke:#333,stroke-width:1px
-style S4 fill:#d0e0ff,stroke:#333,stroke-width:1px
+    %% Ingesta -> Limpieza
+    I1 --> C1
+    I2 --> C1
+    I3 --> C1
+    I4 --> C1
+    I5 --> C1
+
+    %% Limpieza -> Modelo Semántico
+    C1 --> S1c
+    C1 --> S2c
+    C1 --> S3c
+    C1 --> S4c
+
+    %% Modelo Semántico -> Productos de Datos
+    S1c --> P1
+    S3c --> P2
+    S4c --> P3
+    S2c -.-> P3 
+
 

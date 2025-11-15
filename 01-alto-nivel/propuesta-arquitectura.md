@@ -173,7 +173,7 @@ Incluye:
 # 🧠 5. Diagrama de Arquitectura
 
 ```mermaid
-flowchart TB
+flowchart LR
 
 %% ==================== Fuentes ====================
 subgraph Sources["🔹 Fuentes de Datos"]

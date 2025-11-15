@@ -1,6 +1,6 @@
 # 🏗️ Arquitectura Integral de Datos para COVALTO  
-### **Por: Alejandra Hincapié Garzón**  
-**Gerente de Ingeniería de Datos e IA — Liderazgo técnico, estratégico y sistémico**
+**Por:** Alejandra Hincapié Garzón  
+**Cargo:** Gerente de Ingeniería de Datos e IA — Liderazgo técnico y sistémico  
 
 ---
 

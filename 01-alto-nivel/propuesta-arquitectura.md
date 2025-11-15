@@ -183,9 +183,8 @@ subgraph Sources["🔹 Fuentes de Datos"]
     E[PDFs e Imágenes en S3]
 end
 
-%% ==================== Ingesta ====================
+%% ==================== Capa 0 - Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-    I0[" "]
     A --> I1[Regulación + Colas de Trabajo]
     B --> I2[Ingesta en Streaming + Captura de Cambios]
     C --> I3[Extracción Batch + Reglas de Calidad + CDC]
@@ -193,9 +192,8 @@ subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
     E --> I5[OCR y Extracción NLP]
 end
 
-%% ==================== Limpieza ====================
+%% ==================== Capa 1 - Limpieza ====================
 subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
-    P0[" "]
     I1 --> C1[Normalización + Validación de Calidad]
     I2 --> C1
     I3 --> C1
@@ -203,9 +201,8 @@ subgraph Processing["🟩 Capa 1 - Limpieza y Normalización"]
     I5 --> C1
 end
 
-%% ==================== Modelo Semántico ====================
-subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
-    S0[" "]
+%% ==================== Capa 2 - Modelo Semántico ====================
+subgraph Semantic["🟨 Capa 2 - Modelo Semántico"]
     C1 --> S1[Cliente: perfil, segmentación, comportamiento]
     C1 --> S2[Cuenta: información de cuentas]
     C1 --> S3[Transacción: movimientos y pagos]
@@ -213,9 +210,8 @@ subgraph Semantic["🟨 Capa 2 - Modelo Semántico Empresarial"]
     C1 --> S5[Métricas financieras derivadas: KPIs y agregaciones]
 end
 
-%% ==================== Productos de Datos ====================
-subgraph Products["🟧 Capa 3 - Productos de Datos según Caso de Uso"]
-    P3_0[" "]
+%% ==================== Capa 3 - Productos de Datos ====================
+subgraph Products["🟧 Capa 3 - Productos de Datos"]
     S1 --> BI[Visualización y BI]
     S3 --> FR[Motor de Fraude en Tiempo Real]
     S4 --> FS[Feature Store para Riesgo]

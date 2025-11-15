@@ -1,6 +1,3 @@
-¡Perfecto! Aquí tienes el **README.md resumido y listo para copiar**, con la **estructura del repositorio incluyendo comentarios al lado de cada archivo/carpeta**:
-
-```markdown
 # 🚀 Covalto — Desafío de Ingeniería de Datos
 **Autora:** Alejandra Hincapié Garzón — Gerente de Ingeniería de Datos e IA
 

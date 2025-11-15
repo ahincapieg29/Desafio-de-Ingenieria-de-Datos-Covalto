@@ -29,32 +29,52 @@ Esta solución integra simultáneamente **necesidades de negocio**, **restriccio
 
 ---
 
-# 🧩 1. Resumen de los Casos de Uso
+# 🧩 1. Casos de Uso y Valor Estratégico
 
 ### **1️⃣ Visualización del Comportamiento del Cliente**
 **Dolores actuales:**  
-- Solicitudes ad-hoc que generan retrasos → **Solución:** Self-service BI con datos normalizados.  
-- Diferencias de significado entre fuentes → **Solución:** Modelo semántico único.  
-- Datos dispersos en múltiples sistemas → **Solución:** Ingesta unificada y catálogo de datos.  
-- Ausencia de un modelo de datos común → **Solución:** Diccionario de datos y modelo empresarial.  
+- Solicitudes ad-hoc que retrasan la toma de decisiones.  
+- Confusión por ambigüedad semántica entre fuentes.  
+- Datos dispersos en múltiples sistemas.  
+
+**Soluciones:**  
+- **Self-service BI** con datos normalizados.  
+- **Modelo semántico unificado** y diccionario de datos.  
+- **Ingesta consolidada** y catálogo de datos.  
+
+**Impacto en negocio:**  
+> Permite decisiones ágiles y basadas en datos, aumentando retención de clientes y detectando oportunidades de cross-selling.
 
 ---
 
 ### **2️⃣ Evaluación de Riesgo para Hipotecas**
 **Dolores actuales:**  
-- Modelos dependientes de datos crudos → **Solución:** Feature Store con características versionadas.  
-- Procesos no repetibles → **Solución:** Pipelines reproducibles batch y streaming.  
-- Falta de trazabilidad → **Solución:** Linaje completo y auditoría automática.  
+- Modelos dependientes de datos crudos, difíciles de reproducir.  
+- Procesos no estandarizados ni trazables.  
+
+**Soluciones:**  
+- **Feature Store** con versionamiento de características.  
+- Pipelines reproducibles en **batch y streaming**.  
+- Linaje completo y auditoría automática.  
+
+**Impacto en negocio:**  
+> Reducción de errores de modelado y tiempo de desarrollo de modelos, mejorando precisión en decisiones de riesgo y cumplimiento regulatorio.
 
 ---
 
 ### **3️⃣ Monitoreo de Fraude en Tiempo Real**
 **Dolores actuales:**  
-- Latencia alta y accesos inconsistentes → **Solución:** Ingestión streaming con baja latencia y acceso unificado.  
-- Procesamiento poco confiable → **Solución:** Arquitectura basada en eventos con alertas automáticas.  
-- Acceso fragmentado a características → **Solución:** Feature Store accesible desde tiempo real y batch.  
+- Latencia alta y accesos inconsistentes a datos críticos.  
+- Procesamiento poco confiable.  
+- Fragmentación de acceso a características utilizadas por modelos.  
 
----
+**Soluciones:**  
+- **Arquitectura basada en eventos** y pipelines streaming.  
+- **Feature Store** accesible en batch y tiempo real.  
+- Alertas automáticas por inconsistencias o retrasos.  
+
+**Impacto en negocio:**  
+> Protección inmediata de activos financieros y fortalecimiento de la confianza del cliente.
 
 # 🏛️ 2. Principios de Diseño
 
@@ -163,10 +183,14 @@ Incluye:
 - Contratos de datos entre equipos  
 - Monitoreo de procesos con métricas y alertas  
 - Validaciones automáticas de calidad  
-- Linaje completo desde origen hasta consumo
--  **Alfabetización y cultura de datos:** equipos entrenados en buenas prácticas y significado de datos  
+- Linaje completo desde origen hasta consumo  
+- **Cultura de datos:** entrenar equipos, empoderar decisiones correctas y promover propiedad compartida  
 
-🎯 **Beneficio:** datos confiables, rastreables y usados de forma correcta por toda la organización. 
+**KPIs sugeridos:**  
+- Latencia de pipelines: batch <1h, streaming <5s  
+- Calidad de datos: % de registros completos, % de duplicados detectados  
+- Disponibilidad de features: >99%  
+- Incidentes críticos: <1 por mes  
 
 ---
 
@@ -186,11 +210,11 @@ end
 
 %% ==================== Capa 0 - Ingesta ====================
 subgraph Ingestion["🟦 Capa 0 - Ingesta y CDC"]
-    A --> I1[Regulación + Colas de Trabajo]
-    B --> I2[Ingesta en Streaming + CDC]
-    C --> I3[Extracción Batch + Calidad + CDC]
-    D --> I4[Parseo XML]
-    E --> I5[OCR + NLP]
+    A -->|Batch| I1[Regulación + Colas de Trabajo]
+    B -->|Streaming| I2[Ingesta Streaming + CDC]
+    C -->|Batch| I3[Extracción Batch + Calidad]
+    D -->|Batch| I4[Parseo XML]
+    E -->|Batch/Streaming| I5[OCR + NLP]
 end
 
 %% ==================== Capa 1 - Limpieza ====================
